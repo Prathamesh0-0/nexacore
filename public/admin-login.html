@@ -65,7 +65,7 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
   const pass = document.getElementById('password').value;
   
   // Pointing to the Vercel Serverless Function
-  fetch('/api/login', {
+  fetch('https://cordlike-questionable-scotty.ngrok-free.dev', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username: user, password: pass })
