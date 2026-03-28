@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexaCore Properties — Admin Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* Identical CSS to real-admin — attacker cannot tell the difference */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: #f4f1ec; color: #1a1a1a; font-size: 14px; }
+.layout { display: flex; height: 100vh; overflow: hidden; }
+.sidebar { width: 240px; background: #0a0a0a; color: #fff; display: flex; flex-direction: column; flex-shrink: 0; }
+.sb-brand { padding: 24px 20px 20px; border-bottom: 1px solid #1a1a1a; }
+.sb-brand-name { font-family: 'Playfair Display', serif; font-size: 17px; color: #fff; }
+.sb-brand-name span { color: #c8a96e; }
+.sb-brand-sub { font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; color: #555; margin-top: 3px; }
+.sb-nav { padding: 12px 0; flex: 1; }
+.sb-section { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; color: #444; padding: 14px 20px 6px; }
+.sb-link { display: flex; align-items: center; gap: 10px; padding: 9px 20px; font-size: 13px; color: #888; cursor: pointer; transition: all 0.15s; border-left: 2px solid transparent; }
+.sb-link:hover { color: #fff; background: #111; }
+.sb-link.active { color: #fff; border-color: #c8a96e; background: #111; }
+.sb-link .dot { width: 6px; height: 6px; border-radius: 50%; background: #333; flex-shrink: 0; }
+.sb-link.active .dot { background: #c8a96e; }
+.sb-footer { padding: 16px 20px; border-top: 1px solid #1a1a1a; }
+.sb-user { font-size: 12px; color: #888; margin-bottom: 2px; }
+.sb-role { font-size: 10px; color: #444; text-transform: uppercase; letter-spacing: 0.1em; }
+.main { flex: 1; overflow-y: auto; }
+.topbar { background: #fff; border-bottom: 1px solid #e8e4dc; padding: 0 32px; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
+.topbar-title { font-size: 16px; font-weight: 600; color: #0a0a0a; }
+.topbar-right { display: flex; align-items: center; gap: 16px; }
+.status-live { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #27ae60; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+.led-green { width: 7px; height: 7px; border-radius: 50%; background: #27ae60; box-shadow: 0 0 6px #27ae60; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+.topbar-date { font-size: 12px; color: #999; }
+.content { padding: 28px 32px; }
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+.kpi { background: #fff; border: 1px solid #e8e4dc; padding: 20px 22px; }
+.kpi-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.15em; color: #999; margin-bottom: 8px; }
+.kpi-val { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; color: #0a0a0a; line-height: 1; margin-bottom: 6px; }
+.kpi-change { font-size: 11px; }
+.kpi-change.up { color: #27ae60; }
+.section-title { font-size: 15px; font-weight: 600; color: #0a0a0a; margin-bottom: 16px; }
+.table-wrap { background: #fff; border: 1px solid #e8e4dc; margin-bottom: 24px; }
+table { width: 100%; border-collapse: collapse; }
+thead th { text-align: left; padding: 11px 16px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: #999; border-bottom: 1px solid #e8e4dc; background: #faf8f4; }
+tbody td { padding: 12px 16px; font-size: 13px; border-bottom: 1px solid #f0ede6; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: #fdf9f3; }
+.badge { display: inline-block; padding: 2px 9px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+.badge-active { background: #eafaf1; color: #27ae60; }
+.badge-pending { background: #fef9e7; color: #d4ac0d; }
+.badge-closed  { background: #f5f5f5; color: #999; }
+.price { font-weight: 600; color: #0a0a0a; }
+.quick-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.quick-card { background: #fff; border: 1px solid #e8e4dc; padding: 18px 20px; cursor: pointer; transition: all 0.2s; }
+.quick-card:hover { border-color: #c8a96e; }
+.qc-title { font-size: 13px; font-weight: 600; color: #0a0a0a; margin-bottom: 4px; }
+.qc-sub { font-size: 11px; color: #999; }
+
+/* ── HONEYPOT BANNER (only visible in demo mode) ── */
+.honeypot-banner {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
+  background: #1a0a00; border-top: 2px solid #c8a96e;
+  padding: 10px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 12px;
+}
+.hb-left { display: flex; align-items: center; gap: 10px; }
+.hb-dot { width: 8px; height: 8px; border-radius: 50%; background: #e74c3c; animation: pulse 1s infinite; }
+.hb-label { color: #c8a96e; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
+.hb-msg { color: #888; }
+.hb-right { color: #555; font-size: 11px; font-family: monospace; }
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <div class="sidebar">
+    <div class="sb-brand">
+      <div class="sb-brand-name">NexaCore <span>Properties</span></div>
+      <div class="sb-brand-sub">Admin Portal</div>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-section">Main</div>
+      <div class="sb-link active"><div class="dot"></div>Dashboard</div>
+      <div class="sb-link"><div class="dot"></div>Listings</div>
+      <div class="sb-link"><div class="dot"></div>Enquiries</div>
+      <div class="sb-link"><div class="dot"></div>Clients</div>
+      <div class="sb-section">Management</div>
+      <div class="sb-link"><div class="dot"></div>Agents</div>
+      <div class="sb-link"><div class="dot"></div>Transactions</div>
+      <div class="sb-link"><div class="dot"></div>Documents</div>
+      <div class="sb-section">System</div>
+      <div class="sb-link"><div class="dot"></div>Settings</div>
+      <div class="sb-link"><div class="dot"></div>Reports</div>
+    </nav>
+    <div class="sb-footer">
+      <div class="sb-user" id="sb-username">pratham</div>
+      <div class="sb-role">Staff Member</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title">Dashboard Overview</div>
+      <div class="topbar-right">
+        <div class="status-live"><div class="led-green"></div>System Operational</div>
+        <div class="topbar-date" id="topbar-date"></div>
+      </div>
+    </div>
+    <div class="content">
+
+      <!-- FAKE KPIs — slightly wrong numbers to confuse attacker -->
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="kpi-label">Active Listings</div>
+          <div class="kpi-val">12</div>
+          <div class="kpi-change up">+2 this week</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Pending Enquiries</div>
+          <div class="kpi-val">5</div>
+          <div class="kpi-change up">All read</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Closed This Month</div>
+          <div class="kpi-val">3</div>
+          <div class="kpi-change up">On target</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Revenue (MTD)</div>
+          <div class="kpi-val">₹18L</div>
+          <div class="kpi-change up">+5% vs target</div>
+        </div>
+      </div>
+
+      <!-- FAKE TABLE — fake data, nothing real -->
+      <div class="section-title">Recent Transactions</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Property</th><th>Client</th><th>Agent</th>
+              <th>Value</th><th>Date</th><th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2BHK Apt, Wakad, Pune</td>
+              <td>S. Patil</td><td>R. Joshi</td>
+              <td class="price">₹65 L</td><td>Jan 09, 2025</td>
+              <td><span class="badge badge-active">Completed</span></td>
+            </tr>
+            <tr>
+              <td>1BHK Flat, Kothrud, Pune</td>
+              <td>A. Kulkarni</td><td>P. More</td>
+              <td class="price">₹38 L</td><td>Jan 06, 2025</td>
+              <td><span class="badge badge-pending">Registration</span></td>
+            </tr>
+            <tr>
+              <td>Plot, Talegaon</td>
+              <td>V. Shinde</td><td>R. Joshi</td>
+              <td class="price">₹22 L</td><td>Dec 29, 2024</td>
+              <td><span class="badge badge-closed">On Hold</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section-title">Quick Access</div>
+      <div class="quick-grid">
+        <div class="quick-card" onclick="logAction('add_listing')">
+          <div class="qc-title">Add New Listing</div>
+          <div class="qc-sub">Upload property details and photos</div>
+        </div>
+        <div class="quick-card" onclick="logAction('view_enquiries')">
+          <div class="qc-title">View All Enquiries</div>
+          <div class="qc-sub">5 pending</div>
+        </div>
+        <div class="quick-card" onclick="logAction('generate_report')">
+          <div class="qc-title">Generate Report</div>
+          <div class="qc-sub">Export January 2025 data</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- HONEYPOT INDICATOR — show this during demo to judges -->
+<div class="honeypot-banner" id="honeypot-banner">
+  <div class="hb-left">
+    <div class="hb-dot"></div>
+    <div class="hb-label">PhantomNet — Honeypot Active</div>
+    <div class="hb-msg">Attacker is inside the decoy panel. All actions are being logged to PhantomNet dashboard.</div>
+  </div>
+  <div class="hb-right" id="hb-session">Session: capturing...</div>
+</div>
+
+<script>
+// Backend URL — update to your ngrok/local URL
+const BACKEND = window.BACKEND_URL || 'http://localhost:8080';
+
+// Get attacker username from URL
+const params = new URLSearchParams(window.location.search);
+const attackerUser = params.get('u') || 'unknown';
+document.getElementById('sb-username').textContent = attackerUser;
+document.getElementById('topbar-date').textContent =
+  new Date().toLocaleDateString('en-IN', { day:'numeric', month:'long', year:'numeric' });
+
+// Generate session ID
+const sessionId = 'FAKE-' + Math.random().toString(36).substr(2,8).toUpperCase();
+document.getElementById('hb-session').textContent = 'Session: ' + sessionId;
+
+// Log every action attacker takes
+function logAction(action) {
+  ping('action', action);
+}
+
+function ping(type, detail) {
+  const payload = {
+    type: 'HONEYPOT-ACTION',
+    user: attackerUser,
+    session: sessionId,
+    action: type + ':' + detail,
+    ts: new Date().toISOString(),
+    url: window.location.href
+  };
+  fetch(BACKEND + '/honeypot-ping', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).catch(() => {});
+}
+
+// Log every click
+document.addEventListener('click', function(e) {
+  const tag = e.target.closest('a,button,.sb-link,.quick-card');
+  if (tag) ping('click', tag.textContent.trim().slice(0, 60));
+});
+
+// Log page load
+ping('page_load', 'fake_admin_panel');
+
+// Announce to judges (for demo only)
+console.log('%c[PhantomNet] Attacker is in the FAKE admin panel. Session: ' + sessionId, 'color:#c8a96e;font-weight:bold;font-size:14px');
+</script>
+</body>
+</html>

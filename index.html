@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexaCore Properties — Premium Real Estate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black:   #0a0a0a;
+  --dark:    #111111;
+  --charcoal:#1c1c1c;
+  --stone:   #2a2a2a;
+  --gold:    #c8a96e;
+  --gold-lt: #e4c99a;
+  --cream:   #f5f0e8;
+  --white:   #ffffff;
+  --text:    #333333;
+  --muted:   #777777;
+  --border:  #e8e4dc;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--white); overflow-x: hidden; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 0 60px; height: 70px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(255,255,255,0.97);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+}
+.nav-logo {
+  display: flex; flex-direction: column;
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 700; color: var(--black); letter-spacing: 0.02em;
+  text-decoration: none;
+}
+.nav-logo span { font-size: 9px; font-family: 'DM Sans', sans-serif; font-weight: 400; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-top: -2px; }
+.nav-links { display: flex; gap: 36px; list-style: none; }
+.nav-links a { font-size: 13px; font-weight: 500; color: var(--text); text-decoration: none; letter-spacing: 0.03em; transition: color 0.2s; }
+.nav-links a:hover { color: var(--gold); }
+.nav-contact { display: flex; align-items: center; gap: 16px; }
+.nav-phone { font-size: 13px; color: var(--muted); }
+.nav-btn { padding: 9px 22px; background: var(--black); color: var(--white); font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-decoration: none; transition: background 0.2s; }
+.nav-btn:hover { background: var(--gold); }
+
+/* ── HERO ── */
+.hero {
+  height: 100vh; position: relative; display: flex; align-items: flex-end;
+  padding: 0 60px 80px;
+  background: linear-gradient(160deg, #1a1410 0%, #0d0d0d 100%);
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background-image: url('https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1800&q=80');
+  background-size: cover; background-position: center;
+  opacity: 0.35;
+}
+.hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%); }
+.hero-content { position: relative; max-width: 700px; }
+.hero-tag { display: inline-block; font-size: 11px; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); border: 1px solid var(--gold); padding: 5px 14px; margin-bottom: 24px; }
+.hero h1 { font-family: 'Playfair Display', serif; font-size: 62px; font-weight: 400; color: var(--white); line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 20px; }
+.hero h1 em { font-style: italic; color: var(--gold-lt); }
+.hero p { font-size: 16px; font-weight: 300; color: rgba(255,255,255,0.7); line-height: 1.7; max-width: 520px; margin-bottom: 36px; }
+.hero-btns { display: flex; gap: 14px; }
+.btn-gold { padding: 14px 32px; background: var(--gold); color: var(--black); font-size: 13px; font-weight: 600; letter-spacing: 0.05em; text-decoration: none; transition: all 0.2s; }
+.btn-gold:hover { background: var(--gold-lt); }
+.btn-ghost { padding: 14px 32px; border: 1px solid rgba(255,255,255,0.4); color: var(--white); font-size: 13px; font-weight: 400; letter-spacing: 0.05em; text-decoration: none; transition: all 0.2s; }
+.btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+.hero-stats { position: absolute; bottom: 80px; right: 60px; display: flex; gap: 40px; }
+.hstat { text-align: right; }
+.hstat-val { font-family: 'Playfair Display', serif; font-size: 36px; color: var(--white); line-height: 1; }
+.hstat-label { font-size: 11px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.15em; margin-top: 4px; }
+
+/* ── SEARCH BAR ── */
+.search-section { background: var(--cream); padding: 30px 60px; border-bottom: 1px solid var(--border); }
+.search-bar { display: flex; gap: 0; background: var(--white); border: 1px solid var(--border); max-width: 900px; margin: 0 auto; }
+.search-field { flex: 1; display: flex; flex-direction: column; padding: 14px 20px; border-right: 1px solid var(--border); }
+.search-field:last-of-type { border-right: none; }
+.sf-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--gold); font-weight: 600; margin-bottom: 4px; }
+.sf-input { font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--text); border: none; outline: none; background: transparent; }
+.sf-input::placeholder { color: var(--muted); }
+.search-btn { padding: 0 32px; background: var(--black); color: var(--white); font-size: 12px; font-weight: 600; letter-spacing: 0.1em; border: none; cursor: pointer; text-transform: uppercase; transition: background 0.2s; }
+.search-btn:hover { background: var(--gold); color: var(--black); }
+
+/* ── SECTION BASE ── */
+section { padding: 90px 60px; }
+.sec-tag { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.25em; color: var(--gold); margin-bottom: 12px; }
+.sec-title { font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 400; color: var(--black); line-height: 1.15; margin-bottom: 16px; }
+.sec-sub { font-size: 15px; font-weight: 300; color: var(--muted); max-width: 480px; line-height: 1.7; }
+
+/* ── FEATURED LISTINGS ── */
+.listings-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 48px; }
+.view-all { font-size: 13px; color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--gold); padding-bottom: 2px; }
+.listings-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 24px; }
+.listing-card { position: relative; overflow: hidden; cursor: pointer; }
+.listing-card:hover .listing-img img { transform: scale(1.04); }
+.listing-img { aspect-ratio: 4/3; overflow: hidden; background: #eee; }
+.listing-card.large .listing-img { aspect-ratio: 3/2; }
+.listing-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+.listing-badge { position: absolute; top: 16px; left: 16px; font-size: 9px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; padding: 4px 10px; background: var(--gold); color: var(--black); }
+.listing-info { padding: 18px 0 0; }
+.listing-price { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--black); margin-bottom: 4px; }
+.listing-address { font-size: 13px; color: var(--muted); margin-bottom: 10px; }
+.listing-specs { display: flex; gap: 16px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); padding-top: 10px; }
+.listing-spec { display: flex; align-items: center; gap: 5px; }
+.spec-dot { width: 3px; height: 3px; background: var(--gold); border-radius: 50%; }
+
+/* ── SERVICES ── */
+.services-section { background: var(--cream); }
+.services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 48px; }
+.svc-card { background: var(--white); padding: 36px 32px; transition: background 0.2s; }
+.svc-card:hover { background: var(--black); }
+.svc-card:hover .svc-title, .svc-card:hover .svc-text { color: var(--white); }
+.svc-card:hover .svc-num { color: var(--gold); }
+.svc-num { font-family: 'Playfair Display', serif; font-size: 48px; color: var(--border); line-height: 1; margin-bottom: 16px; transition: color 0.2s; }
+.svc-title { font-size: 17px; font-weight: 600; color: var(--black); margin-bottom: 10px; transition: color 0.2s; }
+.svc-text { font-size: 13px; color: var(--muted); line-height: 1.7; transition: color 0.2s; }
+
+/* ── AGENTS ── */
+.agents-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 48px; }
+.agent-card { }
+.agent-photo { aspect-ratio: 3/4; overflow: hidden; background: var(--cream); margin-bottom: 16px; }
+.agent-photo img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(20%); transition: filter 0.3s; }
+.agent-card:hover .agent-photo img { filter: grayscale(0%); }
+.agent-name { font-family: 'Playfair Display', serif; font-size: 17px; color: var(--black); margin-bottom: 3px; }
+.agent-role { font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--gold); margin-bottom: 8px; }
+.agent-stats { display: flex; gap: 16px; font-size: 12px; color: var(--muted); }
+
+/* ── TESTIMONIALS ── */
+.testimonials-section { background: var(--black); padding: 90px 60px; }
+.testimonials-section .sec-title { color: var(--white); }
+.testimonials-section .sec-tag { color: var(--gold); }
+.test-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; }
+.test-card { padding: 32px; border: 1px solid #2a2a2a; }
+.test-quote { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 400; font-style: italic; color: rgba(255,255,255,0.8); line-height: 1.7; margin-bottom: 20px; }
+.test-author { display: flex; align-items: center; gap: 12px; }
+.test-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--stone); overflow: hidden; }
+.test-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.test-name { font-size: 13px; font-weight: 600; color: var(--white); }
+.test-sub { font-size: 11px; color: var(--muted); }
+.test-stars { color: var(--gold); font-size: 12px; letter-spacing: 2px; margin-bottom: 14px; }
+
+/* ── MARQUEE STRIP ── */
+.marquee-strip { background: var(--gold); padding: 14px 0; overflow: hidden; white-space: nowrap; }
+.marquee-inner { display: inline-block; animation: marquee 22s linear infinite; }
+.marquee-item { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--black); padding: 0 40px; }
+.marquee-dot { display: inline-block; width: 4px; height: 4px; background: var(--black); border-radius: 50%; margin: 0 8px; vertical-align: middle; opacity: 0.4; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ── CTA SECTION ── */
+.cta-section {
+  padding: 100px 60px; text-align: center;
+  background: linear-gradient(135deg, #0d0d0d 0%, #1a1208 100%);
+  position: relative; overflow: hidden;
+}
+.cta-section::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, rgba(200,169,110,0.08) 0%, transparent 70%);
+}
+.cta-content { position: relative; }
+.cta-section .sec-title { color: var(--white); font-size: 48px; max-width: 600px; margin: 0 auto 20px; }
+.cta-section .sec-sub { color: rgba(255,255,255,0.5); margin: 0 auto 36px; max-width: 440px; }
+.cta-form { display: flex; gap: 0; max-width: 460px; margin: 0 auto; }
+.cta-form input { flex: 1; padding: 14px 20px; font-family: 'DM Sans', sans-serif; font-size: 13px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.06); color: var(--white); outline: none; }
+.cta-form input::placeholder { color: rgba(255,255,255,0.3); }
+.cta-form button { padding: 14px 28px; background: var(--gold); color: var(--black); font-size: 12px; font-weight: 700; letter-spacing: 0.08em; border: none; cursor: pointer; transition: background 0.2s; }
+.cta-form button:hover { background: var(--gold-lt); }
+
+/* ── FOOTER ── */
+footer { background: var(--black); padding: 60px 60px 30px; border-top: 1px solid #1a1a1a; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 50px; }
+.footer-brand { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--white); margin-bottom: 12px; }
+.footer-brand span { color: var(--gold); }
+.footer-desc { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.7; margin-bottom: 24px; }
+.footer-contact-item { font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 6px; }
+.footer-contact-item span { color: var(--gold); }
+.footer-col-title { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; color: var(--gold); margin-bottom: 20px; }
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-links a { font-size: 13px; color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--white); }
+.footer-bottom { border-top: 1px solid #1a1a1a; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; }
+.footer-bottom p { font-size: 12px; color: rgba(255,255,255,0.25); }
+.footer-bottom a { font-size: 12px; color: rgba(255,255,255,0.25); text-decoration: none; margin-left: 20px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">NexaCore Properties<span>Premium Real Estate</span></a>
+  <ul class="nav-links">
+    <li><a href="#listings">Buy</a></li>
+    <li><a href="#listings">Rent</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#agents">Our Agents</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-contact">
+    <span class="nav-phone">+91 98765 43210</span>
+    <a href="#contact" class="nav-btn">Book Viewing</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Mumbai · Pune · Bangalore · Delhi</div>
+    <h1>Find Your<br><em>Dream Property</em><br>With Confidence</h1>
+    <p>India's most trusted property brokerage. From luxury residences to commercial spaces, we connect you with the perfect space — backed by 18 years of expertise.</p>
+    <div class="hero-btns">
+      <a href="#listings" class="btn-gold">View Listings</a>
+      <a href="#contact" class="btn-ghost">Talk to an Agent</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-val">4,200+</div><div class="hstat-label">Properties Sold</div></div>
+    <div class="hstat"><div class="hstat-val">18 Yrs</div><div class="hstat-label">In Business</div></div>
+    <div class="hstat"><div class="hstat-val">98%</div><div class="hstat-label">Client Satisfaction</div></div>
+  </div>
+</div>
+
+<!-- SEARCH -->
+<div class="search-section">
+  <div class="search-bar">
+    <div class="search-field">
+      <div class="sf-label">Location</div>
+      <input class="sf-input" type="text" placeholder="Mumbai, Pune, Bangalore...">
+    </div>
+    <div class="search-field">
+      <div class="sf-label">Property Type</div>
+      <input class="sf-input" type="text" placeholder="Apartment, Villa, Plot...">
+    </div>
+    <div class="search-field">
+      <div class="sf-label">Budget</div>
+      <input class="sf-input" type="text" placeholder="₹50L – ₹5Cr">
+    </div>
+    <div class="search-field">
+      <div class="sf-label">Bedrooms</div>
+      <input class="sf-input" type="text" placeholder="2BHK, 3BHK, 4BHK...">
+    </div>
+    <button class="search-btn">Search</button>
+  </div>
+</div>
+
+<!-- LISTINGS -->
+<section id="listings">
+  <div class="listings-header">
+    <div>
+      <div class="sec-tag">Hand-Picked for You</div>
+      <div class="sec-title">Featured Listings</div>
+    </div>
+    <a href="#" class="view-all">View All 240+ Properties</a>
+  </div>
+  <div class="listings-grid">
+
+    <div class="listing-card large">
+      <div class="listing-img">
+        <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80" alt="Luxury Villa">
+        <div class="listing-badge">Featured</div>
+      </div>
+      <div class="listing-info">
+        <div class="listing-price">₹4.80 Crore</div>
+        <div class="listing-address">Koregaon Park, Pune — 4 BHK Luxury Villa</div>
+        <div class="listing-specs">
+          <div class="listing-spec"><div class="spec-dot"></div>4 Beds</div>
+          <div class="listing-spec"><div class="spec-dot"></div>3 Baths</div>
+          <div class="listing-spec"><div class="spec-dot"></div>3,200 sq.ft</div>
+          <div class="listing-spec"><div class="spec-dot"></div>Private Pool</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="listing-card">
+      <div class="listing-img">
+        <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=80" alt="Apartment">
+        <div class="listing-badge">New</div>
+      </div>
+      <div class="listing-info">
+        <div class="listing-price">₹1.25 Crore</div>
+        <div class="listing-address">Bandra West, Mumbai — 2 BHK Apartment</div>
+        <div class="listing-specs">
+          <div class="listing-spec"><div class="spec-dot"></div>2 Beds</div>
+          <div class="listing-spec"><div class="spec-dot"></div>2 Baths</div>
+          <div class="listing-spec"><div class="spec-dot"></div>1,100 sq.ft</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="listing-card">
+      <div class="listing-img">
+        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80" alt="Penthouse">
+        <div class="listing-badge">Exclusive</div>
+      </div>
+      <div class="listing-info">
+        <div class="listing-price">₹8.50 Crore</div>
+        <div class="listing-address">Whitefield, Bangalore — Penthouse</div>
+        <div class="listing-specs">
+          <div class="listing-spec"><div class="spec-dot"></div>5 Beds</div>
+          <div class="listing-spec"><div class="spec-dot"></div>4 Baths</div>
+          <div class="listing-spec"><div class="spec-dot"></div>5,400 sq.ft</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="listing-card">
+      <div class="listing-img">
+        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&q=80" alt="Office">
+      </div>
+      <div class="listing-info">
+        <div class="listing-price">₹95 Lakh</div>
+        <div class="listing-address">Hinjewadi, Pune — 3 BHK Apartment</div>
+        <div class="listing-specs">
+          <div class="listing-spec"><div class="spec-dot"></div>3 Beds</div>
+          <div class="listing-spec"><div class="spec-dot"></div>2 Baths</div>
+          <div class="listing-spec"><div class="spec-dot"></div>1,650 sq.ft</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="listing-card">
+      <div class="listing-img">
+        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80" alt="Row House">
+      </div>
+      <div class="listing-info">
+        <div class="listing-price">₹2.40 Crore</div>
+        <div class="listing-address">Juhu, Mumbai — 3 BHK Row House</div>
+        <div class="listing-specs">
+          <div class="listing-spec"><div class="spec-dot"></div>3 Beds</div>
+          <div class="listing-spec"><div class="spec-dot"></div>3 Baths</div>
+          <div class="listing-spec"><div class="spec-dot"></div>2,200 sq.ft</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <span class="marquee-item">Mumbai</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Pune</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Bangalore</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Delhi NCR</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Hyderabad</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Chennai</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Ahmedabad</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Kolkata</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Goa</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Jaipur</span><span class="marquee-dot"></span>
+    <!-- repeat for seamless loop -->
+    <span class="marquee-item">Mumbai</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Pune</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Bangalore</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Delhi NCR</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Hyderabad</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Chennai</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Ahmedabad</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Kolkata</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Goa</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Jaipur</span><span class="marquee-dot"></span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="services-section" id="services">
+  <div class="sec-tag">What We Offer</div>
+  <div class="sec-title">End-to-End Property<br>Solutions</div>
+  <div class="services-grid">
+    <div class="svc-card">
+      <div class="svc-num">01</div>
+      <div class="svc-title">Property Search & Matching</div>
+      <div class="svc-text">AI-powered property matching based on your requirements, lifestyle, and budget. Access to off-market listings not found anywhere else.</div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-num">02</div>
+      <div class="svc-title">Legal & Documentation</div>
+      <div class="svc-text">Complete assistance with sale deeds, title verification, RERA compliance, home loan documentation, and registration.</div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-num">03</div>
+      <div class="svc-title">Property Valuation</div>
+      <div class="svc-text">Certified valuations based on current market rates, locality trends, upcoming infrastructure, and comparable sales data.</div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-num">04</div>
+      <div class="svc-title">Rental Management</div>
+      <div class="svc-text">Full-service rental management including tenant screening, lease agreements, rent collection, and maintenance coordination.</div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-num">05</div>
+      <div class="svc-title">NRI Investment Services</div>
+      <div class="svc-text">Dedicated NRI desk for property investment, FEMA compliance, Power of Attorney services, and repatriation of funds.</div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-num">06</div>
+      <div class="svc-title">Commercial Real Estate</div>
+      <div class="svc-text">Office spaces, retail units, warehousing, and commercial plots. Dedicated commercial team with deep corporate network.</div>
+    </div>
+  </div>
+</section>
+
+<!-- AGENTS -->
+<section id="agents">
+  <div class="sec-tag">The Team Behind Your Deal</div>
+  <div class="sec-title">Meet Our Top Agents</div>
+  <div class="agents-grid">
+    <div class="agent-card">
+      <div class="agent-photo"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80" alt="Agent"></div>
+      <div class="agent-name">Vikram Malhotra</div>
+      <div class="agent-role">Senior Partner — Mumbai</div>
+      <div class="agent-stats"><span>320+ deals</span><span>·</span><span>12 years</span></div>
+    </div>
+    <div class="agent-card">
+      <div class="agent-photo"><img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80" alt="Agent"></div>
+      <div class="agent-name">Priya Sharma</div>
+      <div class="agent-role">Luxury Specialist — Pune</div>
+      <div class="agent-stats"><span>180+ deals</span><span>·</span><span>8 years</span></div>
+    </div>
+    <div class="agent-card">
+      <div class="agent-photo"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80" alt="Agent"></div>
+      <div class="agent-name">Arjun Nair</div>
+      <div class="agent-role">Commercial Head — Bangalore</div>
+      <div class="agent-stats"><span>410+ deals</span><span>·</span><span>15 years</span></div>
+    </div>
+    <div class="agent-card">
+      <div class="agent-photo"><img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80" alt="Agent"></div>
+      <div class="agent-name">Sneha Kapoor</div>
+      <div class="agent-role">NRI Investments — Delhi</div>
+      <div class="agent-stats"><span>150+ deals</span><span>·</span><span>6 years</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section">
+  <div class="sec-tag">Client Stories</div>
+  <div class="sec-title" style="color:#fff">Trusted by Thousands</div>
+  <div class="test-grid">
+    <div class="test-card">
+      <div class="test-stars">★★★★★</div>
+      <div class="test-quote">"NexaCore found us a 4BHK in Koregaon Park within three weeks. The legal team handled everything end-to-end. Seamless experience."</div>
+      <div class="test-author">
+        <div class="test-avatar"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&q=80" alt=""></div>
+        <div><div class="test-name">Rahul Deshmukh</div><div class="test-sub">Purchased in Pune</div></div>
+      </div>
+    </div>
+    <div class="test-card">
+      <div class="test-stars">★★★★★</div>
+      <div class="test-quote">"As an NRI investing from the UK, I was nervous. The NexaCore team handled every paperwork detail and kept me updated at every step."</div>
+      <div class="test-author">
+        <div class="test-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&q=80" alt=""></div>
+        <div><div class="test-name">Anita Mehta</div><div class="test-sub">NRI Investment, Mumbai</div></div>
+      </div>
+    </div>
+    <div class="test-card">
+      <div class="test-stars">★★★★★</div>
+      <div class="test-quote">"Got 22% above the expected valuation on our commercial property. Vikram's market knowledge is extraordinary. Highly recommend."</div>
+      <div class="test-author">
+        <div class="test-avatar"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&q=80" alt=""></div>
+        <div><div class="test-name">Suresh Iyer</div><div class="test-sub">Commercial Sale, Bangalore</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="cta-content">
+    <div class="sec-tag">Don't Wait</div>
+    <div class="sec-title">Ready to Find Your Property?</div>
+    <div class="sec-sub">Leave your number and a senior agent will call you within 2 hours.</div>
+    <div class="cta-form">
+      <input type="text" placeholder="Your phone number">
+      <button>Request Callback</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">NexaCore <span>Properties</span></div>
+      <div class="footer-desc">India's premium real estate brokerage since 2007. RERA registered. ISO 9001:2015 certified. 6 offices across major metros.</div>
+      <div class="footer-contact-item"><span>Phone:</span> +91 98765 43210</div>
+      <div class="footer-contact-item"><span>Email:</span> hello@nexacoreproperties.in</div>
+      <div class="footer-contact-item"><span>HQ:</span> Bandra Kurla Complex, Mumbai 400051</div>
+    </div>
+    <div>
+      <div class="footer-col-title">Properties</div>
+      <ul class="footer-links">
+        <li><a href="#">Residential</a></li>
+        <li><a href="#">Commercial</a></li>
+        <li><a href="#">Luxury Villas</a></li>
+        <li><a href="#">Plots & Land</a></li>
+        <li><a href="#">New Projects</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Cities</div>
+      <ul class="footer-links">
+        <li><a href="#">Mumbai</a></li>
+        <li><a href="#">Pune</a></li>
+        <li><a href="#">Bangalore</a></li>
+        <li><a href="#">Delhi NCR</a></li>
+        <li><a href="#">Hyderabad</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Company</div>
+      <ul class="footer-links">
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Our Agents</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 NexaCore Properties Pvt. Ltd. RERA Reg: P52000055612 · MH/RERA/A51900000174</p>
+    <div>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms</a>
+      <a href="#">RERA Disclosure</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

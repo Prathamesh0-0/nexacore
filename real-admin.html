@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexaCore Properties — Admin Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: #f4f1ec; color: #1a1a1a; font-size: 14px; }
+
+/* Layout */
+.layout { display: flex; height: 100vh; overflow: hidden; }
+
+/* Sidebar */
+.sidebar {
+  width: 240px; background: #0a0a0a; color: #fff;
+  display: flex; flex-direction: column;
+  flex-shrink: 0;
+}
+.sb-brand {
+  padding: 24px 20px 20px;
+  border-bottom: 1px solid #1a1a1a;
+}
+.sb-brand-name { font-family: 'Playfair Display', serif; font-size: 17px; color: #fff; }
+.sb-brand-name span { color: #c8a96e; }
+.sb-brand-sub { font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; color: #555; margin-top: 3px; }
+
+.sb-nav { padding: 12px 0; flex: 1; }
+.sb-section { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; color: #444; padding: 14px 20px 6px; }
+.sb-link {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 20px;
+  font-size: 13px; color: #888;
+  cursor: pointer; transition: all 0.15s;
+  border-left: 2px solid transparent;
+}
+.sb-link:hover { color: #fff; background: #111; }
+.sb-link.active { color: #fff; border-color: #c8a96e; background: #111; }
+.sb-link .dot { width: 6px; height: 6px; border-radius: 50%; background: #333; flex-shrink: 0; }
+.sb-link.active .dot, .sb-link:hover .dot { background: #c8a96e; }
+
+.sb-footer { padding: 16px 20px; border-top: 1px solid #1a1a1a; font-size: 11px; color: #555; }
+.sb-user { font-size: 12px; color: #888; margin-bottom: 2px; }
+.sb-role { font-size: 10px; color: #444; text-transform: uppercase; letter-spacing: 0.1em; }
+
+/* Main */
+.main { flex: 1; overflow-y: auto; }
+
+.topbar {
+  background: #fff; border-bottom: 1px solid #e8e4dc;
+  padding: 0 32px; height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 10;
+}
+.topbar-title { font-size: 16px; font-weight: 600; color: #0a0a0a; }
+.topbar-right { display: flex; align-items: center; gap: 16px; }
+.status-live {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: #27ae60; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.led-green { width: 7px; height: 7px; border-radius: 50%; background: #27ae60; box-shadow: 0 0 6px #27ae60; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+.topbar-date { font-size: 12px; color: #999; }
+
+.content { padding: 28px 32px; }
+
+/* KPI cards */
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+.kpi {
+  background: #fff; border: 1px solid #e8e4dc; padding: 20px 22px;
+}
+.kpi-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.15em; color: #999; margin-bottom: 8px; }
+.kpi-val { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; color: #0a0a0a; line-height: 1; margin-bottom: 6px; }
+.kpi-change { font-size: 11px; }
+.kpi-change.up { color: #27ae60; }
+.kpi-change.down { color: #e74c3c; }
+
+/* Table */
+.section-title { font-size: 15px; font-weight: 600; color: #0a0a0a; margin-bottom: 16px; }
+.table-wrap { background: #fff; border: 1px solid #e8e4dc; margin-bottom: 24px; }
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  text-align: left; padding: 11px 16px;
+  font-size: 10px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.12em; color: #999;
+  border-bottom: 1px solid #e8e4dc; background: #faf8f4;
+}
+tbody td { padding: 12px 16px; font-size: 13px; border-bottom: 1px solid #f0ede6; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: #fdf9f3; }
+.badge {
+  display: inline-block; padding: 2px 9px;
+  font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.badge-active { background: #eafaf1; color: #27ae60; }
+.badge-pending { background: #fef9e7; color: #d4ac0d; }
+.badge-closed  { background: #f5f5f5; color: #999; }
+.price { font-weight: 600; color: #0a0a0a; }
+
+/* Quick access */
+.quick-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.quick-card {
+  background: #fff; border: 1px solid #e8e4dc; padding: 18px 20px;
+  cursor: pointer; transition: all 0.2s;
+}
+.quick-card:hover { border-color: #c8a96e; }
+.qc-title { font-size: 13px; font-weight: 600; color: #0a0a0a; margin-bottom: 4px; }
+.qc-sub { font-size: 11px; color: #999; }
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sb-brand">
+      <div class="sb-brand-name">NexaCore <span>Properties</span></div>
+      <div class="sb-brand-sub">Admin Portal</div>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-section">Main</div>
+      <div class="sb-link active"><div class="dot"></div>Dashboard</div>
+      <div class="sb-link"><div class="dot"></div>Listings</div>
+      <div class="sb-link"><div class="dot"></div>Enquiries</div>
+      <div class="sb-link"><div class="dot"></div>Clients</div>
+      <div class="sb-section">Management</div>
+      <div class="sb-link"><div class="dot"></div>Agents</div>
+      <div class="sb-link"><div class="dot"></div>Transactions</div>
+      <div class="sb-link"><div class="dot"></div>Documents</div>
+      <div class="sb-section">System</div>
+      <div class="sb-link"><div class="dot"></div>Settings</div>
+      <div class="sb-link"><div class="dot"></div>Reports</div>
+    </nav>
+    <div class="sb-footer">
+      <div class="sb-user" id="sb-username">admin</div>
+      <div class="sb-role">Senior Administrator</div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title">Dashboard Overview</div>
+      <div class="topbar-right">
+        <div class="status-live"><div class="led-green"></div>System Operational</div>
+        <div class="topbar-date" id="topbar-date"></div>
+      </div>
+    </div>
+    <div class="content">
+
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="kpi-label">Active Listings</div>
+          <div class="kpi-val">247</div>
+          <div class="kpi-change up">+12 this week</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Pending Enquiries</div>
+          <div class="kpi-val">83</div>
+          <div class="kpi-change down">18 unread</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Closed This Month</div>
+          <div class="kpi-val">31</div>
+          <div class="kpi-change up">+6 vs last month</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Revenue (MTD)</div>
+          <div class="kpi-val">₹1.4Cr</div>
+          <div class="kpi-change up">+18% vs target</div>
+        </div>
+      </div>
+
+      <!-- Recent Transactions -->
+      <div class="section-title">Recent Transactions</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Client</th>
+              <th>Agent</th>
+              <th>Value</th>
+              <th>Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>4BHK Villa, Koregaon Park, Pune</td>
+              <td>Rahul Deshmukh</td>
+              <td>Priya Sharma</td>
+              <td class="price">₹4.80 Cr</td>
+              <td>Jan 10, 2025</td>
+              <td><span class="badge badge-active">Completed</span></td>
+            </tr>
+            <tr>
+              <td>2BHK Apt, Bandra West, Mumbai</td>
+              <td>Anita Mehta</td>
+              <td>Vikram Malhotra</td>
+              <td class="price">₹1.25 Cr</td>
+              <td>Jan 08, 2025</td>
+              <td><span class="badge badge-pending">Registration</span></td>
+            </tr>
+            <tr>
+              <td>Penthouse, Whitefield, Bangalore</td>
+              <td>Suresh Iyer</td>
+              <td>Arjun Nair</td>
+              <td class="price">₹8.50 Cr</td>
+              <td>Jan 05, 2025</td>
+              <td><span class="badge badge-active">Completed</span></td>
+            </tr>
+            <tr>
+              <td>3BHK Apt, Hinjewadi, Pune</td>
+              <td>Divya Kulkarni</td>
+              <td>Priya Sharma</td>
+              <td class="price">₹95 L</td>
+              <td>Dec 30, 2024</td>
+              <td><span class="badge badge-active">Completed</span></td>
+            </tr>
+            <tr>
+              <td>Office Space, BKC, Mumbai</td>
+              <td>Horizon Fintech Ltd</td>
+              <td>Vikram Malhotra</td>
+              <td class="price">₹3.20 Cr</td>
+              <td>Dec 28, 2024</td>
+              <td><span class="badge badge-pending">Docs Pending</span></td>
+            </tr>
+            <tr>
+              <td>Row House, Juhu, Mumbai</td>
+              <td>Rohan Joshi</td>
+              <td>Sneha Kapoor</td>
+              <td class="price">₹2.40 Cr</td>
+              <td>Dec 22, 2024</td>
+              <td><span class="badge badge-closed">On Hold</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Quick Access -->
+      <div class="section-title">Quick Access</div>
+      <div class="quick-grid">
+        <div class="quick-card">
+          <div class="qc-title">Add New Listing</div>
+          <div class="qc-sub">Upload property details and photos</div>
+        </div>
+        <div class="quick-card">
+          <div class="qc-title">View All Enquiries</div>
+          <div class="qc-sub">83 pending — 18 unread today</div>
+        </div>
+        <div class="quick-card">
+          <div class="qc-title">Generate Monthly Report</div>
+          <div class="qc-sub">PDF export of January 2025 data</div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /layout -->
+
+<script>
+// Show logged-in username from URL token
+try {
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get('token');
+  if (token) {
+    const decoded = atob(token).split(':')[0];
+    document.getElementById('sb-username').textContent = decoded;
+  }
+} catch(e) {}
+
+// Date
+document.getElementById('topbar-date').textContent =
+  new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+</script>
+</body>
+</html>
